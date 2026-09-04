@@ -1,0 +1,48 @@
+! =====================================================
+! SW1 Configuration - STP Lab
+! =====================================================
+
+enable
+configure terminal
+
+hostname SW1
+
+! --- VLANs (must exist locally so STP has a VLAN 2 instance) ---
+vlan 2
+ name VLAN2
+ exit
+
+! --- Trunk to SW2 (Fa0/3) ---
+interface FastEthernet0/3
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! --- Trunk to SW3 (Fa0/1) ---
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! --- Trunk to SW4 (Fa0/2) ---
+interface FastEthernet0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! =====================================================
+! STEP 2: Make SW1 primary root for VLAN1, secondary for VLAN2
+! =====================================================
+spanning-tree vlan 1 root primary
+spanning-tree vlan 2 root secondary
+
+! =====================================================
+! STEP 4: Raise VLAN1 port priority on Fa0/1 (link to SW3) to 240
+!         (default is 128; higher number = LESS preferred)
+! =====================================================
+interface FastEthernet0/1
+ spanning-tree vlan 1 port-priority 240
+ exit
+
+end
+write memory

@@ -1,0 +1,51 @@
+! =====================================================
+! SW4 Configuration - STP Lab
+! =====================================================
+
+enable
+configure terminal
+
+hostname SW4
+
+! --- VLANs ---
+vlan 2
+ name VLAN2
+ exit
+
+! --- Trunk to SW2 (Fa0/1) ---
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! --- Trunk to SW1 (Fa0/2) ---
+interface FastEthernet0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! --- Access port to end device (VLAN2, 172.16.0.128/25) ---
+interface FastEthernet0/3
+ switchport mode access
+ switchport access vlan 2
+ exit
+
+! =====================================================
+! STEP 3: Increase VLAN1 cost of Fa0/2 (link to SW1) to 100
+!         (default 100 Mbps cost is 19 — this makes the path
+!          via Fa0/2 less attractive for VLAN1's root port calc)
+! =====================================================
+interface FastEthernet0/2
+ spanning-tree vlan 1 cost 100
+ exit
+
+! =====================================================
+! STEP 5: PortFast + BPDU Guard on the access (end-device) port
+! =====================================================
+interface FastEthernet0/3
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ exit
+
+end
+write memory

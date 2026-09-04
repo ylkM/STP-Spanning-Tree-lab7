@@ -1,0 +1,20 @@
+# End Device IP Addressing
+
+This is a pure Layer-2 (STP) lab — no inter-VLAN routing is required, so a default
+gateway is optional/not used unless your instructor adds a later routing step.
+
+## PC (VLAN1) — connected to SW3 Fa0/3
+
+```
+IP Address:      172.16.0.1
+Subnet Mask:      255.255.255.128   (/25)
+Default Gateway:  (not required for this lab)
+```
+
+## PC (VLAN2) — connected to SW4 Fa0/3
+
+```
+IP Address:      172.16.0.129
+Subnet Mask:      255.255.255.128   (/25)
+Default Gateway:  (not required for this lab)
+```

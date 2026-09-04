@@ -1,0 +1,40 @@
+! =====================================================
+! SW2 Configuration - STP Lab
+! =====================================================
+
+enable
+configure terminal
+
+hostname SW2
+
+! --- VLANs ---
+vlan 2
+ name VLAN2
+ exit
+
+! --- Trunk to SW4 (Fa0/1) ---
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! --- Trunk to SW3 (Fa0/2) ---
+interface FastEthernet0/2
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! --- Trunk to SW1 (Fa0/3) ---
+interface FastEthernet0/3
+ switchport mode trunk
+ switchport trunk allowed vlan 1,2
+ exit
+
+! =====================================================
+! STEP 2: Make SW2 primary root for VLAN2, secondary for VLAN1
+! =====================================================
+spanning-tree vlan 2 root primary
+spanning-tree vlan 1 root secondary
+
+end
+write memory
